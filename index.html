@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Volume Nob Experiment</title>
+    <style>
+      #nobs {margin:0 0; padding:0 0; list-style:none;}
+      #nobs li {margin:10px 0; height:40px;}
+      #nobs li div {float:left;}
+      #nobs li input {margin:10px 0 10px 10px;}
+      .nob_theme {
+        background-color:#999;
+        box-shadow:inset -5px -5px 20px 0 #333, inset 5px 5px 20px 0 #ccc;
+      }
+      .nob {
+        position:relative;
+        top:1px;
+        left:1px;
+        border:1px solid #777;
+      }
+      .overlay {
+        display:block;
+        background-color:transparent;
+        box-shadow:5px 5px 5px 0 #777;
+      }
+      .indicator {
+        position:relative;
+        width:5px;
+        background-color:gray;
+        border-bottom-left-radius:2px;
+        border-bottom-right-radius:2px;
+        box-shadow:inset 1px 1px 2px 1px #555;
+      }
+    </style>
+    <script src="nob.js"></script>
+    <script>
+      window.onload = function() {
+        var params = {
+          diameter: 30,
+          default: 0,
+          step: 1,
+          min: 0,
+          max: 65545,
+          minAngle: -120,
+          maxAngle: 120,
+          theme: 'nob_theme'
+        }
+        var nobs = document.querySelector('#nobs')
+        for (var i = 0; i < 10; i++) {
+          (function() {
+            var li = document.createElement('li');
+            var n = new nob(li, params);
+            var input = document.createElement('input');
+            input.type = 'number';
+            input.min = params.min;
+            input.max = params.max;
+            input.value = params.default;
+            n.bindInput(input);
+            input.oninput = function() {
+              if (input.validity.valid) {
+                n.update(input.value);
+              }
+            };
+            nobs.appendChild(li);
+            li.appendChild(input);
+          }());
+        }
+      }
+    </script>
+  </head>
+  <body>
+    <ul id="nobs"></ul>
+  </body>
+</html>
